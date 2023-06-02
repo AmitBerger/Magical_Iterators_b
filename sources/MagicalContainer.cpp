@@ -19,21 +19,24 @@ bool isPrime(int num) {
 }
 
 void MagicalContainer::addElement(int element) {
-  elements.push_back(element);
+  for(int element_: sortedElements){
+            if(element_ == element)
+                return;
+        }
   sortedElements.push_back(element);
   std::sort(sortedElements.begin(), sortedElements.end());
 }
 
 void MagicalContainer::removeElement(int element) {
-  auto it = std::find(elements.begin(), elements.end(), element);
-  if (it != elements.end()) {
-    elements.erase(it);
+  auto it = std::find(sortedElements.begin(), sortedElements.end(), element);
+  if (it != sortedElements.end()) {
+    sortedElements.erase(it);
   } else {
     throw std::runtime_error("Element not found");
   }
 }
 
-int MagicalContainer::size() const { return elements.size(); }
+int MagicalContainer::size() const { return sortedElements.size(); }
 
 // AscendingIterator
 MagicalContainer::AscendingIterator::AscendingIterator(
