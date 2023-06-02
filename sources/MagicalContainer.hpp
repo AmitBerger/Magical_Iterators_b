@@ -10,7 +10,6 @@ bool isPrime(int num);
 
 class MagicalContainer {
 private:
-  std::vector<int> elements;
   std::vector<int> sortedElements;
 
 public:
