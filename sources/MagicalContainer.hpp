@@ -69,20 +69,14 @@ public:
     MagicalContainer &container;
     std::size_t currentIndex;
     bool reverse;
+    int number_steps=0;
 
   public:
     // Move constructor
     SideCrossIterator(SideCrossIterator &&other) = default;
 
     // Move assignment operator
-    SideCrossIterator &operator=(SideCrossIterator &&other) noexcept {
-      if (this != &other) {
-        container = other.container;
-        currentIndex = other.currentIndex;
-        reverse = other.reverse;
-      }
-      return *this;
-    }
+    SideCrossIterator &operator=(SideCrossIterator &&other) noexcept ;
 
     // Copy constructor
     SideCrossIterator(const SideCrossIterator &other);
