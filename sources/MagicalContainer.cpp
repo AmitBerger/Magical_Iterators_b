@@ -1,6 +1,7 @@
 #include "MagicalContainer.hpp"
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <iostream>
 
 namespace ariel {
@@ -19,10 +20,10 @@ bool isPrime(int num) {
 }
 
 void MagicalContainer::addElement(int element) {
-  for(int element_: sortedElements){
-            if(element_ == element)
-                return;
-        }
+  for (int element_ : sortedElements) {
+    if (element_ == element)
+      return;
+  }
   sortedElements.push_back(element);
   std::sort(sortedElements.begin(), sortedElements.end());
 }
@@ -104,7 +105,6 @@ MagicalContainer::AscendingIterator::end() const {
 }
 
 // SideCrossIterator
-// SideCrossIterator
 MagicalContainer::SideCrossIterator::SideCrossIterator(
     const SideCrossIterator &other)
     : container(other.container), currentIndex(other.currentIndex),
@@ -157,18 +157,15 @@ int MagicalContainer::SideCrossIterator::operator*() const {
 
 MagicalContainer::SideCrossIterator &
 MagicalContainer::SideCrossIterator::operator++() {
-  if (currentIndex >= (container.sortedElements.size()/2)+1) {
+  number_steps++;
+  if (number_steps == container.size() + 1) {
     throw std::runtime_error("Iterator out of range");
   }
-
   if (reverse) {
     ++currentIndex;
   }
 
   reverse = !reverse;
-  if (currentIndex >= (container.sortedElements.size()/2)+1) {
-    throw std::runtime_error("Iterator out of range");
-  }
   return *this;
 }
 
@@ -183,11 +180,10 @@ MagicalContainer::SideCrossIterator::end() const {
     return SideCrossIterator(container, (container.sortedElements.size() / 2),
                              false);
   } else {
-    return SideCrossIterator(
-        container, ((container.sortedElements.size() / 2)), true);
+    return SideCrossIterator(container, ((container.sortedElements.size() / 2)),
+                             true);
   }
 }
-
 
 // PrimeIterator
 MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator &other)
