@@ -26,6 +26,12 @@ void MagicalContainer::addElement(int element) {
   }
   sortedElements.push_back(element);
   std::sort(sortedElements.begin(), sortedElements.end());
+  prime_pointers.clear();
+  for (unsigned long i = 0; i < sortedElements.size(); i++) {
+    if (isPrime(sortedElements.at(i))) {
+      prime_pointers.push_back(&sortedElements.at(i));
+    }
+  }
 }
 
 void MagicalContainer::removeElement(int element) {
@@ -193,12 +199,7 @@ MagicalContainer::PrimeIterator::~PrimeIterator() {}
 
 MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer &cont,
                                                std::size_t index)
-    : container(cont), currentIndex(index) {
-  while (currentIndex < (unsigned long)container.size() &&
-         !isPrime(container.sortedElements[currentIndex])) {
-    ++currentIndex;
-  }
-}
+    : container(cont), currentIndex(index) {}
 
 MagicalContainer::PrimeIterator &
 MagicalContainer::PrimeIterator::operator=(const PrimeIterator &other) {
@@ -221,43 +222,36 @@ bool MagicalContainer::PrimeIterator::operator!=(
 
 bool MagicalContainer::PrimeIterator::operator>(
     const PrimeIterator &other) const {
-  return container.sortedElements[currentIndex] >
-         container.sortedElements[other.currentIndex];
+  return currentIndex > other.currentIndex;
 }
 
 bool MagicalContainer::PrimeIterator::operator<(
     const PrimeIterator &other) const {
-  return container.sortedElements[currentIndex] <
-         container.sortedElements[other.currentIndex];
+  return currentIndex < other.currentIndex;
 }
 
-int MagicalContainer::PrimeIterator::operator*() const {
-  return container.sortedElements[currentIndex];
+int &MagicalContainer::PrimeIterator::operator*() const {
+  return *container.prime_pointers.at(currentIndex);
 }
 
 MagicalContainer::PrimeIterator &MagicalContainer::PrimeIterator::operator++() {
-  ++currentIndex;
-  while (currentIndex < container.sortedElements.size() &&
-         !isPrime(container.sortedElements[currentIndex])) {
-    ++currentIndex;
-  }
-  if (currentIndex > container.sortedElements.size()) {
+
+  if (currentIndex >= container.prime_pointers.size()) {
     throw std::runtime_error("Iterator out of range");
   }
+  if (*this == end()) {
+    throw std::runtime_error("Iterator out of range");
+  }
+  currentIndex++;
   return *this;
 }
 
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::begin() const {
-  size_t startIndex = 0;
-  while (startIndex < (unsigned long)container.size() &&
-         !isPrime(container.sortedElements[startIndex])) {
-    ++startIndex;
-  }
-  return PrimeIterator(container, startIndex);
+  return PrimeIterator(container, 0);
 }
 
 MagicalContainer::PrimeIterator MagicalContainer::PrimeIterator::end() const {
-  return PrimeIterator(container, (unsigned long)container.size());
+  return PrimeIterator(container, container.prime_pointers.size());
 }
 
 } // namespace ariel

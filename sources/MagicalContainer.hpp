@@ -11,6 +11,7 @@ bool isPrime(int num);
 class MagicalContainer {
 private:
   std::vector<int> sortedElements;
+  std ::vector<int *> prime_pointers;
 
 public:
   void addElement(int element);
@@ -69,14 +70,14 @@ public:
     MagicalContainer &container;
     std::size_t currentIndex;
     bool reverse;
-    int number_steps=0;
+    int number_steps = 0;
 
   public:
     // Move constructor
     SideCrossIterator(SideCrossIterator &&other) = default;
 
     // Move assignment operator
-    SideCrossIterator &operator=(SideCrossIterator &&other) noexcept ;
+    SideCrossIterator &operator=(SideCrossIterator &&other) noexcept;
 
     // Copy constructor
     SideCrossIterator(const SideCrossIterator &other);
@@ -139,7 +140,7 @@ public:
     bool operator<(const PrimeIterator &other) const;
 
     // Dereference operator
-    int operator*() const;
+    int &operator*() const;
 
     // Increment operator
     PrimeIterator &operator++();
